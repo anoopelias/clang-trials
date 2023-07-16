@@ -3,7 +3,7 @@
 #include "util.h"
 
 int main() {
-    printf("Hello, %d\n", add(12, 3));
+    printf("Hello, clang %d\n", add(12, 3));
 
     return 0;
 }
