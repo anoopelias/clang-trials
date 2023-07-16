@@ -15,7 +15,7 @@ clean:
 		-o $@ $<
 
 main.wasm: main.o util.o
-	wasm-ld -m wasm32 --no-entry \
+	wasm-ld \
 		-L $(WASI_LIBC_PATH)/dist/lib/wasm32-wasi \
 		$(WASI_LIBC_PATH)/dist/lib/wasm32-wasi/crt1-command.o main.o util.o \
 		-lc $(WASI_SDK_PATH)/build/compiler-rt/lib/wasi/libclang_rt.builtins-wasm32.a \
