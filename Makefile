@@ -15,14 +15,11 @@ clean:
 		-o $@ $<
 
 main.wasm: main.o util.o
-	wasm-ld \
-		-m wasm32 \
-		-L/Users/anoopelias/wspace/wasi-libc/dist/lib/wasm32-wasi \
-		/Users/anoopelias/wspace/wasi-libc/dist/lib/wasm32-wasi/crt1-command.o \
-		--no-entry \
-		main.o util.o \
+	wasm-ld -m wasm32 --no-entry \
+		-L /Users/anoopelias/wspace/wasi-libc/dist/lib/wasm32-wasi \
+		/Users/anoopelias/wspace/wasi-libc/dist/lib/wasm32-wasi/crt1-command.o main.o util.o \
 		-lc /opt/homebrew/Cellar/llvm/16.0.6/lib/clang/16/lib/wasi/libclang_rt.builtins-wasm32.a \
 		-o $@
 
 run: all
-	${WAMR_PATH}/product-mini/platforms/darwin/build/iwasm main.wasm
+	$(WAMR_PATH)/product-mini/platforms/darwin/build/iwasm main.wasm
