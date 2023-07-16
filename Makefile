@@ -1,18 +1,21 @@
 # clang --target=wasm32-wasi --sysroot ~/wspace/wasi-libc/dist -Wl,--no-entry main.c util.c
 
-C_FILES = $(wildcard *.c)
-OBJ_FILES = $(C_FILES:%.c=%.o)
-
 all: clean main.wasm
 
 clean:
 	rm -f main.ll main.o main.s util.ll util.o util.s main.wasm
 
-%.o: %.c
-	clang -cc1 -triple wasm32-unknown-wasi -emit-obj \
+%.ll: %.c
+	clang -cc1 -triple wasm32-unknown-wasi -emit-llvm \
 		-internal-isystem /opt/homebrew/Cellar/llvm/16.0.6/lib/clang/16/include \
 		-internal-isystem $(WASI_LIBC_PATH)/dist/include \
 		-o $@ $<
+
+main.o: main.ll
+	llc -march=wasm32 $< -filetype=obj
+
+util.o: util.ll
+	llc -march=wasm32 $< -filetype=obj
 
 main.wasm: main.o util.o
 	wasm-ld \
