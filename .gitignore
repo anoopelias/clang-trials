@@ -5,3 +5,4 @@ util.s
 util.ll
 util.o
 a.out
+main.wasm
