@@ -3,6 +3,8 @@
 C_FILES = $(wildcard *.c)
 OBJ_FILES = $(C_FILES:%.c=%.o)
 
+all: clean main.wasm
+
 clean:
 	rm -f main.ll main.o main.s util.ll util.o util.s main.wasm
 
@@ -20,9 +22,7 @@ main.wasm: main.o util.o
 		--no-entry \
 		main.o util.o \
 		-lc /opt/homebrew/Cellar/llvm/16.0.6/lib/clang/16/lib/wasi/libclang_rt.builtins-wasm32.a \
-		-o main.wasm
-
-all: clean main.wasm
+		-o $@
 
 run: all
 	${WAMR_PATH}/product-mini/platforms/darwin/build/iwasm main.wasm
