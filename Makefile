@@ -7,16 +7,10 @@ clean:
 	rm -f main.ll main.o main.s util.ll util.o util.s main.wasm
 
 %.o: %.c
-	clang \
-		-cc1 \
-		-triple wasm32-unknown-wasi \
-		-emit-obj \
-		-isysroot /Users/anoopelias/wspace/wasi-libc/dist \
+	clang -cc1 -triple wasm32-unknown-wasi -emit-obj \
 		-internal-isystem /opt/homebrew/Cellar/llvm/16.0.6/lib/clang/16/include \
-		-internal-isystem /Users/anoopelias/wspace/wasi-libc/dist/include/wasm32-wasi \
 		-internal-isystem /Users/anoopelias/wspace/wasi-libc/dist/include \
-		-o $@ \
-		-x c $<
+		-o $@ $<
 
 main.wasm: main.o util.o
 	wasm-ld \
