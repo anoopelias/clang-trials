@@ -11,14 +11,14 @@ clean:
 %.o: %.c
 	clang -cc1 -triple wasm32-unknown-wasi -emit-obj \
 		-internal-isystem /opt/homebrew/Cellar/llvm/16.0.6/lib/clang/16/include \
-		-internal-isystem /Users/anoopelias/wspace/wasi-libc/dist/include \
+		-internal-isystem $(WASI_LIBC_PATH)/dist/include \
 		-o $@ $<
 
 main.wasm: main.o util.o
 	wasm-ld -m wasm32 --no-entry \
-		-L /Users/anoopelias/wspace/wasi-libc/dist/lib/wasm32-wasi \
-		/Users/anoopelias/wspace/wasi-libc/dist/lib/wasm32-wasi/crt1-command.o main.o util.o \
-		-lc /opt/homebrew/Cellar/llvm/16.0.6/lib/clang/16/lib/wasi/libclang_rt.builtins-wasm32.a \
+		-L $(WASI_LIBC_PATH)/dist/lib/wasm32-wasi \
+		$(WASI_LIBC_PATH)/dist/lib/wasm32-wasi/crt1-command.o main.o util.o \
+		-lc $(WASI_SDK_PATH)/build/compiler-rt/lib/wasi/libclang_rt.builtins-wasm32.a \
 		-o $@
 
 run: all
