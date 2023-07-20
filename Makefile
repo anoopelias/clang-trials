@@ -25,8 +25,10 @@ util.o: util.ll
 main.wasm: main.o util.o
 	wasm-ld \
 		-L $(WASI_LIBC_PATH)/dist/lib/wasm32-wasi \
-		$(WASI_LIBC_PATH)/dist/lib/wasm32-wasi/crt1-command.o main.o util.o \
-		-lc $(WASI_SDK_PATH)/lib/clang/16/lib/wasi/libclang_rt.builtins-wasm32.a \
+		main.o util.o \
+		--export=main \
+		--no-entry \
+		--allow-undefined \
 		-o $@
 
 run: all
